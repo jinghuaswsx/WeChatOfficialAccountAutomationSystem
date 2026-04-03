@@ -12,6 +12,7 @@ async def test_health_check(client):
 
 
 @pytest.mark.asyncio
-async def test_root_redirects_or_returns(client):
+async def test_root_without_static_returns_404(client):
+    """Without static files, root returns 404 (static mount not active)."""
     resp = await client.get("/")
-    assert resp.status_code == 200
+    assert resp.status_code == 404

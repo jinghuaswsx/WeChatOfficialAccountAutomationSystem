@@ -29,9 +29,11 @@ def create_app(
     # Routes
     app.include_router(api_router)
 
-    @app.get("/")
-    async def root():
-        return {"message": "微信公众号自动化系统", "version": "0.1.0"}
+    # 静态文件服务（生产模式下 serve 前端构建产物）
+    static_dir = Path(__file__).parent.parent / "static"
+    if static_dir.exists():
+        from fastapi.staticfiles import StaticFiles
+        app.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
 
     return app
 
